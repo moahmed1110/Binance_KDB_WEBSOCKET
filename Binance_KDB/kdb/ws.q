@@ -4,7 +4,8 @@
 px: ([] sym:`$();time:`timestamp$();bid:`float$();bidqty:`float$();ask:`float$();askqty:`float$());
 pxusd: ([] sym:`$();time:`timestamp$();quote:`$();base:`$();usd:`$();bid:`float$();ask:`float$();bidqty:`float$();askqty:`float$());
 
-arb:([] base:`$();pbid:`float$();pask:`float$();maxbid:`float$();minbid:`float$();maxask:`float$();minask:`float$();maxbidsym:`$();minbidsym:`$();maxasksym:`$();minasksym:`$())
+
+arb:([] base:`$();pbid:`float$();pask:`float$();maxbid:`float$();minbid:`float$();maxask:`float$();minask:`float$();maxbidsym:`$();minbidsym:`$();maxasksym:`$();minasksym:`$());
 
 mk:("BNB";"BTC";"ETH";"SDT");
 
@@ -53,25 +54,28 @@ send:{[msg;h]neg[h].j.j msg};
 
 .upd: { [y]
 `px upsert flip `sym`time`bid`bidqty`ask`askqty!(`$y`s;"P"$string("i"$y[`E]%1000);"F"$y`b; "F"$y`B;"F"$y`a;"F"$y`A);
-`pxusd upsert flip `sym`quote`base`usd`bid`ask`bidqty`askqty ! (`$(y`s) ;`$.qccy each  (y`s) ;`$.bccy each  (y`s);.usd each (y`s);(.busdt each y`s) * ("F"$y`b) ;(.ausdt each y`s) * ("F"$y`a);"F"$y`A;"F"$y`B);
-.arb;
- send[.j.j (() xkey select sym,quote,bid,bidqty,ask,askqty from pxusd)] each (key .z.W);
-  send[.j.j (() xkey select base,pbid,pask,minasksym,maxbidsym from arb)] each (key .z.W);
+
+  send[.j.j (() xkey select sym,time,bid,bidqty,ask,askqty from px)] each (key .z.W);
+  `pxusd upsert flip `sym`quote`base`usd`bid`ask`bidqty`askqty ! (`$(y`s) ;`$.qccy each  (y`s) ;`$.bccy each  (y`s);.usd each (y`s);(.busdt each y`s) * ("F"$y`b) ;(.ausdt each y`s) * ("F"$y`a);"F"$y`A;"F"$y`B);
+
+
 };
 
 
+
+
 .z.wo:{
-  send[.j.j (() xkey select sym,quote,bid,bidqty,ask,askqty from pxusd)] each (key .z.W);
+  send[.j.j (() xkey select sym,bid,bidqty,ask,askqty from px)] each (key .z.W);
   send[.j.j (() xkey select base,pask,minasksym,maxasksym from arb)] each (key .z.W);
 
-}
+};
 
-.temit;
 
 .temit:{
   send[.j.j (() xkey select sym,quote,bid,bidqty,ask,askqty from pxusd)] each (key .z.W);
   send[.j.j (() xkey select base,pbid,pask,minasksym,maxbidsym from arb)] each (key .z.W);
 
  };
+
 
 r:(`$":ws://localhost:8080")"GET / HTTP/1.1\r\nHost: localhost:8080\r\n\r\n";

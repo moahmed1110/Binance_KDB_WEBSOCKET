@@ -6,4 +6,4 @@ There are some simple calculations done in KDB to look for Arbitrage opportuniti
 
 Still some cleaning up to do.
 
-![Alt Text](https://gfycat.com/EvilOrneryArieltoucan)
+![Alt Text](https://thumbs.gfycat.com/EvilOrneryArieltoucan-size_restricted.gif)
